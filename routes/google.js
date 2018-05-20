@@ -7,26 +7,27 @@ var googleMapsClient = require('@google/maps').createClient({
 
 // done
 // test place id : ChIJc6EceWquEmsRmBVAjzjXM-g
-// router.get('/place/detail', (req, res, next) => {
-//     let params = {placeid, language} = req.query;
+router.get('/place/detail', (req, res, next) => {
+    let params = {placeid, language} = req.query;
 
-//     googleMapsClient.place(params, (err, result) => {
-//         if (err) res.send({message: 'INVALID_REQUEST'});
+    googleMapsClient.place(params, (err, result) => {
+        if (err) res.send({message: 'INVALID_REQUEST'});
 
-//         res.send(result.json.result);
-//     });
-// });
+        res.send(result.json.result);
+    });
+});
 
+//done
 //test params
-//query : fastfood
-//location : [-33.865, 151.038]
+//query : school
+//location : [45.501689, -73.567256]
 //radius: 5000
 router.get('/places', (req, res, next) => {
     let params = {query, location, radius, minprice, maxprice, opennow, type, pagetoken, region} = req.query;
+    params.location = JSON.parse(params.location);
+    params.radius = parseInt(params.radius);
 
     googleMapsClient.places(params, (err, result) => {
-        console.log("ASDG");
-        console.log("res: %o", result);
         if (err) res.send({message: 'INVALID_REQUEST'})
 
         res.send(result.json.results);
