@@ -6,7 +6,7 @@ var googleMapsClient = require('@google/maps').createClient({
 });
 
 // done
-// test place id : ChIJc6EceWquEmsRmBVAjzjXM-g
+// test place id : ChIJCT3qZGoayUwRmPk37VHZSRY
 router.get('/place/detail', (req, res, next) => {
     let params = {placeid, language} = req.query;
 
@@ -34,24 +34,40 @@ router.get('/places', (req, res, next) => {
     });
 });
 
-// router.get('/places/nearby', (req, res, next) => {
-//     let params = {location, language, radius, keyword, minprice, maxprice, name, opennow, rankby, type, pagetoken} = req.query;
+//done
+//test params
+//location : [45.501689, -73.567256]
+//radius: 5000
+router.get('/places/nearby', (req, res, next) => {
+    let params = {location, language, radius, keyword, minprice, maxprice, name, opennow, rankby, type, pagetoken} = req.query;
+    params.location = JSON.parse(params.location);
+    params.radius = parseInt(params.radius);
 
-//     googleMapsClient.placesNearby({
-//         location: [-33.865, 151.038]
-//     }, (err, res) => {
-//         console.log("nearby places %o", res.json.results);
-//     });
-// });
+    googleMapsClient.placesNearby(params, (err, result) => {
+        if (err) res.send({message: 'INVALID_REQUEST'});
 
-// router.get('/place/photo', (req, res, next) => {
-//     let params = {photoreference, maxwidth, maxheight} = req.query;
+        res.send(result.json.results);
+    });
+});
 
-//     googleMapsClient.placesPhoto({
-//         photoreference: 'CnRvAAAAwMpdHeWlXl-lH0vp7lez4znKPIWSWvgvZFISdKx45AwJVP1Qp37YOrH7sqHMJ8C-vBDC546decipPHchJhHZL94RcTUfPa1jWzo-rSHaTlbNtjh-N68RkcToUCuY9v2HNpo5mziqkir37WU8FJEqVBIQ4k938TI3e7bf8xq-uwDZcxoUbO_ZJzPxremiQurAYzCTwRhE_V0'
-//     }, (err, res) => {
-//         console.log("places photo %o", res);
-//     })
-// });
+
+//TODO: returns nothing
+//test params
+//photoreference:  CnRvAAAAwMpdHeWlXl-lH0vp7lez4znKPIWSWvgvZFISdKx45AwJVP1Qp37YOrH7sqHMJ8C-vBDC546decipPHchJhHZL94RcTUfPa1jWzo-rSHaTlbNtjh-N68RkcToUCuY9v2HNpo5mziqkir37WU8FJEqVBIQ4k938TI3e7bf8xq-uwDZcxoUbO_ZJzPxremiQurAYzCTwRhE_V0
+router.get('/place/photo', (req, res, next) => {
+    let params = {photoreference, maxwidth, maxheight} = req.query;
+    params.maxwidth = parseInt(params.maxwidth);
+    params.maxheight = parseInt(params.maxheight);
+
+    googleMapsClient.placesPhoto({
+        photoreference: 'CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU',
+        maxwidth: 400
+    }, (err, result) => {
+        console.log("got a response?");
+        if (err) res.send(err);
+
+        res.send(result);
+    });
+});
 
 module.exports = router;
