@@ -42,7 +42,7 @@ router.get('/places/nearby', (req, res, next) => {
     let params = {location, language, radius, keyword, minprice, maxprice, name, opennow, rankby, type, pagetoken} = req.query;
     params.location = JSON.parse(params.location);
     params.radius = parseInt(params.radius);
-
+    
     googleMapsClient.placesNearby(params, (err, result) => {
         if (err) res.send({message: 'INVALID_REQUEST'});
 
