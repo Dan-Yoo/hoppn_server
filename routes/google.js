@@ -46,14 +46,49 @@ router.get('/places/nearby', (req, res, next) => {
     googleMapsClient.placesNearby(params, (err, result) => {
         if (err) res.send({message: 'INVALID_REQUEST'});
 
-        res.send(result.json.results);
+        let results = result.json.results;
+        let allPromises = [];
+
+        // for each, get photo from photoref.
+        let promises = results.reduce((callback, place) => {
+            let promise = new Promise((resolve) => {
+                getPlaceImage(place, resolve);
+            });
+
+            allPromises.push(promise);
+            return promise;
+        }, Promise.resolve());
+
+        Promise.all(allPromises)
+            .then((places) => {
+                res.send(places);
+            })
+            .catch((error) => res.send({message: 'Problem loading places'}));
     });
 });
 
+function getPlaceImage(place, callback) {
+    // put a default image here maybe?
+    // if not, handle undefined image in frontend
+    place.image = '';
 
-//TODO: returns nothing
-//test params
-//photoreference:  CnRvAAAAwMpdHeWlXl-lH0vp7lez4znKPIWSWvgvZFISdKx45AwJVP1Qp37YOrH7sqHMJ8C-vBDC546decipPHchJhHZL94RcTUfPa1jWzo-rSHaTlbNtjh-N68RkcToUCuY9v2HNpo5mziqkir37WU8FJEqVBIQ4k938TI3e7bf8xq-uwDZcxoUbO_ZJzPxremiQurAYzCTwRhE_V0
+    if (!place.photos) {
+        callback(place);
+        return;
+    }
+
+    let params = {
+        photoreference: place.photos[0].photo_reference,
+        maxwidth: 400,
+        maxwidth: 400
+    };
+
+    googleMapsClient.placesPhoto(params, (err, result) => {
+        if (!err) place.image = result.req.path;
+        callback(place);
+    });
+}
+
 router.get('/place/photo', (req, res, next) => {
     let params = {photoreference, maxwidth, maxheight} = req.query;
     params.maxwidth = parseInt(params.maxwidth);
