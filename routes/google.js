@@ -39,7 +39,6 @@ router.get('/places', (req, res, next) => {
 //location : [45.501689, -73.567256]
 //radius: 5000
 router.get('/places/nearby', (req, res, next) => {
-    console.log("trying to get google thing");
     let params = {location, language, radius, keyword, minprice, maxprice, name, opennow, rankby, type, pagetoken} = req.query;
     params.location = JSON.parse(params.location);
     params.radius = parseInt(params.radius);
