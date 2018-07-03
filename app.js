@@ -53,7 +53,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.get('/', function (req, res) {
+app.get('/test', function (req, res) {
   res.sendFile(path.join(__dirname + '/dist/hoppn/index.html'));
 });
 
