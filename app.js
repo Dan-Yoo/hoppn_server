@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cors = require('cors');
 var originsWhitelist = [
   'http://localhost:4200',
-  'https://hoppn.herokuapp.com'
+  'http://hoppn.herokuapp.com'
 ];
 var corsOptions = {
   origin: function (origin, callback) {
