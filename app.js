@@ -36,6 +36,7 @@ app.use(express.static(__dirname + '/dist/hoppn'));
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/dist/hoppn/index.html'));
 });
+
 app.use('/google', googleRouter);
 
 // catch 404 and forward to error handler
