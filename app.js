@@ -33,10 +33,6 @@ app.use(cors(corsOptions));
 
 app.use(express.static(__dirname + '/dist/hoppn'));
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname + '/dist/hoppn/index.html'));
-});
-
 app.use('/google', googleRouter);
 
 // catch 404 and forward to error handler
@@ -53,6 +49,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname + '/dist/hoppn/index.html'));
 });
 
 module.exports = app;
