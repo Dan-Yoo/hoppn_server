@@ -33,7 +33,8 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors(corsOptions));
 
-app.use(express.static(__dirname + '/dist/hoppn'));
+app.use(express.static('dist/hoppn'));
+// app.use(express.static(__dirname + '/dist/hoppn'));
 
 app.use('/google', googleRouter);
 
