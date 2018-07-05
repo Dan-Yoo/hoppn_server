@@ -84,7 +84,7 @@ function getPlaceImage(place, callback) {
     };
 
     googleMapsClient.placesPhoto(params, (err, result) => {
-        if (!err) place.image = result.req.path;
+        if (!err) place.image = 'https://lh4.googleusercontent.com/'+ result.req.path;
         callback(place);
     });
 }
