@@ -5,7 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 var originsWhitelist = [
-  'http://localhost:4200'
+  'http://localhost:4200',
+  'https://hoppn-dev.firebaseapp.com',
+  'http://hoppn-dev.firebaseapp.com'
 ];
 var corsOptions = {
   origin: function (origin, callback) {
