@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const config = require('../config');
+// const config = require('../config');
 var googleMapsClient = require('@google/maps').createClient({
-    key: config.google.key
+    key: process.env.GOOGLE_API_KEY
 });
 
 // done
