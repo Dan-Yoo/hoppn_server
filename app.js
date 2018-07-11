@@ -7,7 +7,8 @@ var cors = require('cors');
 var originsWhitelist = [
   'http://localhost:4200',
   'https://hoppn-dev.firebaseapp.com',
-  'http://hoppn-dev.firebaseapp.com'
+  'http://hoppn-dev.firebaseapp.com',
+  'https://hoppn.herokuapp.com'
 ];
 var corsOptions = {
   origin: function (origin, callback) {
@@ -30,10 +31,12 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors(corsOptions));
 
-app.use('/', indexRouter);
+// app.use(express.static('dist/hoppn'));
+app.use(express.static(__dirname + '/dist/hoppn'));
+
 app.use('/google', googleRouter);
 
 // catch 404 and forward to error handler
@@ -50,6 +53,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname + '/dist/hoppn/index.html'));
 });
 
 module.exports = app;
